@@ -76,4 +76,43 @@ class TradebookSearch extends Tradebook
 
         return $dataProvider;
     }
+
+    public function searchInWatchList($params)
+    {
+        // $query = Tradebook::find();
+        $query = Tradebook::find()->where(['watchlist_id' => $params['id']]);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'watchlist_id' => $this->watchlist_id,
+            'quantity' => $this->quantity,
+            'price' => $this->price,
+            'amount' => $this->amount,
+            'date' => $this->date,
+            'status' => $this->status,
+            'created_by' => $this->created_by,
+            'created_dt' => $this->created_dt,
+            'updated_by' => $this->updated_by,
+            'updated_dt' => $this->updated_dt,
+        ]);
+
+        $query->andFilterWhere(['like', 'ip_address', $this->ip_address]);
+
+        return $dataProvider;
+    }
 }

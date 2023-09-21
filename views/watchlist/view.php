@@ -66,9 +66,9 @@ $desiredProfit = $totalDays * $model->desired_profit;
         </div>
         <div class="col-lg-4">
             <?= $form->field($model, 'current_price')->textInput(['maxlength' => true]) ?>
-            <div class="d-flex align-items-center p-3 my-3 text-dark bg-info rounded shadow-sm">
+            <div class="d-flex align-items-center p-3 my-3 text-white bg-danger rounded shadow-sm">
                 <div class="lh-1">
-                    <h1 class="h6 mb-0 text-dark lh-1">Required Stock: <?= $data['required_stock'] ?></h1>
+                    <h1 class="h6 mb-0 text-white lh-1">Required Stock: <?= $data['required_stock'] ?></h1>
                     <!-- <small>Since 2011</small> -->
                 </div>
             </div>

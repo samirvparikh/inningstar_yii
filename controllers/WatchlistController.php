@@ -77,8 +77,9 @@ class WatchlistController extends Controller
 
         $data['required_stock'] = ceil($model->desired_profit / $model->desired_per_share_price);
 
+        
         $searchModelTradebook = new TradebookSearch();
-        $dataProviderTradebook = $searchModelTradebook->search($this->request->queryParams);
+        $dataProviderTradebook = $searchModelTradebook->searchInWatchList($this->request->queryParams);
 
         return $this->render('view', [
             'model' => $model,
