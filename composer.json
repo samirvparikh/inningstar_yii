@@ -21,6 +21,7 @@
         "develandoo/yii2-push-notification": "^1.1",
         "kartik-v/yii2-grid": "dev-master",
         "kartik-v/yii2-widget-datepicker": "dev-master",
+        "kartik-v/yii2-widget-spinner": "dev-master",
         "yiisoft/yii2-jui": "~2.0.0"
     },
     "require-dev": {

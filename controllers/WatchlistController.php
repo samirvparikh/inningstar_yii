@@ -121,6 +121,11 @@ class WatchlistController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionCalculate()
+    {
+        echo "<pre>"; print_r(Yii::$app->request->post());
+    }
+
     /**
      * Finds the Watchlist model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap5\ActiveForm;
+use yii\bootstrap\BootstrapWidgetTrait;
 
 /** @var yii\web\View $this */
 /** @var app\models\Watchlist $model */
@@ -19,24 +20,26 @@ $date1 = new DateTime($startDate);
 $date2 = new DateTime($endDate);
 
 $interval = $date1->diff($date2);
-$totalDays = ($interval->days<=0) ? 1 : $interval->days;
+$totalDays = ($interval->days <= 0) ? 1 : $interval->days;
 $desiredProfit = $totalDays * $model->desired_profit;
 
 ?>
 <div class="watchlist-view">
 
-    <h1>#<?= Html::encode($this->title) ?></h1>
+    <h1>#<?= Html::encode($this->title) ?>
+    <span class="float-end">
+    <?= Html::a('+Add Trade', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        'class' => 'btn btn-danger',
+        'data' => [
+            'confirm' => 'Are you sure you want to delete this item?',
+            'method' => 'post',
+        ],
+        ]) ?>      
+    </span>
+</h1>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <div class="row">
         <div class="col-lg-6">
@@ -58,32 +61,68 @@ $desiredProfit = $totalDays * $model->desired_profit;
             ]) ?>
         </div>
         <div class="col-lg-6">
-            <?php $form = ActiveForm::begin(); ?>
-            <?= $form->field($model, 'total_days')->textInput(['maxlength' => true, 'value'=>$totalDays]) ?>
-            <?= $form->field($model, 'total_desired_profit')->textInput(['maxlength' => true, 'value'=>$desiredProfit]) ?>
-            <?= $form->field($model, 'current_price')->textInput(['maxlength' => true]) ?>
-            <div class="form-group">
-                <?= Html::button('Calculate', ['class' => 'btn btn-success']) ?>
+            <div class="row">
+                <div class="col-lg-6">
+                    <?php $form = ActiveForm::begin(); ?>
+                    <?= $form->field($model, 'total_days')->textInput(['value' => $totalDays]) ?>
+                    <?= $form->field($model, 'total_desired_profit')->textInput(['value' => $desiredProfit]) ?>
+                </div>
+                <div class="col-lg-6">
+                    <?= $form->field($model, 'current_price')->textInput(['maxlength' => true]) ?>
+                    <div class="form-group">
+                        <?= $form->field($model, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
+                        <?= Html::button('Calculate', ['class' => 'btn btn-success calculate']) ?>
+                        
+                    </div>
+                    <?php ActiveForm::end(); ?>
+                </div>
             </div>
-            <?php ActiveForm::end(); ?>
         </div>
-        <!-- <div class="col-lg-12">
-            <table class="table table-striped table-bordered">
-                <tbody>
-                    <tr>
-                        <td>Scrip Name: <?= ($model->scrip_name) ? $model->scrip_name : '' ?></td>
-                        <td>Desired Per Share Price: <?= ($model->desired_per_share_price) ? $model->desired_per_share_price : '' ?></td>
-                        <td>Desired Profit: <?= ($model->desired_profit) ? $model->desired_profit : '' ?></td>
-                        <td>Date: <?= ($model->date) ? date('d-M-Y', strtotime($model->date)) : '' ?></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
-        <div class="col-lg-12">
-
-        </div>
-
     </div>
-
-
 </div>
+
+
+<!-- Calculate Modal -->
+<div class="modal fade" id="calculateModal" tabindex="-1" aria-labelledby="calculateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="calculateModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $(document).on('click', '.calculate', function() {
+            var formData = {
+                watchlist_id: $('#watchlist-id').val(),
+                total_days: $('#watchlist-total_days').val(),
+                total_desired_profit: $('#watchlist-total_desired_profit').val(),
+                current_price: $('#watchlist-current_price').val(),
+            };
+            $.ajax({
+                url: '<?php echo Yii::$app->request->baseUrl . '/index.php?r=watchlist/calculate' ?>',
+                data: formData,
+                type: "POST",
+                success: function() {
+                    console.log("success");
+                    $('#calculateModal').modal('show');
+                },
+                error: function() {
+                    console.log("failure");
+                }
+            });
+        });
+    });
+</script>

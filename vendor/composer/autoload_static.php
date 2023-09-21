@@ -39,8 +39,10 @@ class ComposerStaticInit0d775b2f1a1c12f8e37c64ee92b1c775
         ),
         'k' => 
         array (
+            'kartik\\spinner\\' => 15,
             'kartik\\grid\\' => 12,
             'kartik\\dialog\\' => 14,
+            'kartik\\date\\' => 12,
             'kartik\\base\\' => 12,
         ),
         'd' => 
@@ -142,6 +144,10 @@ class ComposerStaticInit0d775b2f1a1c12f8e37c64ee92b1c775
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
         ),
+        'kartik\\spinner\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-spinner/src',
+        ),
         'kartik\\grid\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-grid/src',
@@ -149,6 +155,10 @@ class ComposerStaticInit0d775b2f1a1c12f8e37c64ee92b1c775
         'kartik\\dialog\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-dialog/src',
+        ),
+        'kartik\\date\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-datepicker/src',
         ),
         'kartik\\base\\' => 
         array (
