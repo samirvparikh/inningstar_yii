@@ -4,29 +4,28 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\WatchlistSearch $model */
+/** @var app\models\TradebookSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="watchlist-search">
+<div class="tradebook-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
-        'options' => [
-            'data-pjax' => 1
-        ],
     ]); ?>
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'scrip_name') ?>
+    <?= $form->field($model, 'watchlist_id') ?>
 
-    <?= $form->field($model, 'desired_per_share_price') ?>
+    <?= $form->field($model, 'quantity') ?>
 
-    <?= $form->field($model, 'desired_profit') ?>
+    <?= $form->field($model, 'price') ?>
 
-    <?= $form->field($model, 'date') ?>
+    <?= $form->field($model, 'amount') ?>
+
+    <?php // echo $form->field($model, 'date') ?>
 
     <?php // echo $form->field($model, 'status') ?>
 

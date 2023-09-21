@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap5\ActiveForm;
-use yii\bootstrap\BootstrapWidgetTrait;
+use yii\grid\GridView;
 
 /** @var yii\web\View $this */
 /** @var app\models\Watchlist $model */
@@ -22,27 +22,27 @@ $date2 = new DateTime($endDate);
 $interval = $date1->diff($date2);
 $totalDays = ($interval->days <= 0) ? 1 : $interval->days;
 $desiredProfit = $totalDays * $model->desired_profit;
-
+// echo $data['scrip_name'];
 ?>
 <div class="watchlist-view">
 
     <h1>#<?= Html::encode($this->title) ?>
-    <span class="float-end">
-    <?= Html::a('+Add Trade', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-    <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-        'class' => 'btn btn-danger',
-        'data' => [
-            'confirm' => 'Are you sure you want to delete this item?',
-            'method' => 'post',
-        ],
-        ]) ?>      
-    </span>
-</h1>
+        <span class="float-end">
+            <?= Html::a('+Add Trade', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </span>
+    </h1>
 
-
+    <?php $form = ActiveForm::begin(); ?>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
@@ -60,25 +60,41 @@ $desiredProfit = $totalDays * $model->desired_profit;
                 ],
             ]) ?>
         </div>
-        <div class="col-lg-6">
-            <div class="row">
-                <div class="col-lg-6">
-                    <?php $form = ActiveForm::begin(); ?>
-                    <?= $form->field($model, 'total_days')->textInput(['value' => $totalDays]) ?>
-                    <?= $form->field($model, 'total_desired_profit')->textInput(['value' => $desiredProfit]) ?>
+        <div class="col-lg-4">
+            <?= $form->field($model, 'total_days')->textInput(['value' => $totalDays]) ?>
+            <?= $form->field($model, 'total_desired_profit')->textInput(['value' => $desiredProfit]) ?>
+        </div>
+        <div class="col-lg-4">
+            <?= $form->field($model, 'current_price')->textInput(['maxlength' => true]) ?>
+            <div class="d-flex align-items-center p-3 my-3 text-dark bg-info rounded shadow-sm">
+                <div class="lh-1">
+                    <h1 class="h6 mb-0 text-dark lh-1">Required Stock: <?= $data['required_stock'] ?></h1>
+                    <!-- <small>Since 2011</small> -->
                 </div>
-                <div class="col-lg-6">
-                    <?= $form->field($model, 'current_price')->textInput(['maxlength' => true]) ?>
-                    <div class="form-group">
-                        <?= $form->field($model, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
-                        <?= Html::button('Calculate', ['class' => 'btn btn-success calculate']) ?>
-                        
-                    </div>
-                    <?php ActiveForm::end(); ?>
-                </div>
+            </div>
+            <div class="form-group">
+                <?= $form->field($model, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
+                <?= Html::button('Calculate', ['class' => 'btn btn-success calculate']) ?>
             </div>
         </div>
     </div>
+    <?php ActiveForm::end(); ?>
+
+    <div class="row">
+    <?= GridView::widget([
+        'dataProvider' => $dataProviderTradebook,
+        // 'filterModel' => $searchModelTradebook,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'watchlist_id',
+            'quantity',
+            'price',
+            'amount',
+            'date',
+        ],
+    ]); ?>
+    </div>
+</div>
 </div>
 
 

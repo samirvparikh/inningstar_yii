@@ -2,19 +2,16 @@
 
 namespace app\controllers;
 
-use Yii;
-use app\models\Watchlist;
-use app\models\WatchlistSearch;
+use app\models\Tradebook;
+use app\models\TradebookSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Common;
-use app\models\TradebookSearch;
 
 /**
- * WatchlistController implements the CRUD actions for Watchlist model.
+ * TradebookController implements the CRUD actions for Tradebook model.
  */
-class WatchlistController extends Controller
+class TradebookController extends Controller
 {
     /**
      * @inheritDoc
@@ -35,16 +32,14 @@ class WatchlistController extends Controller
     }
 
     /**
-     * Lists all Watchlist models.
+     * Lists all Tradebook models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new WatchlistSearch();
+        $searchModel = new TradebookSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
-        
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -53,53 +48,28 @@ class WatchlistController extends Controller
     }
 
     /**
-     * Displays a single Watchlist model.
+     * Displays a single Tradebook model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        // echo $model->scrip_name."<br>";
-        // echo $model->desired_per_share_price."<br>";
-        // echo $model->desired_profit."<br>";
-        // echo $model->date."<br>";
-
-        $startDate = $model->date; // start date
-        $endDate = date('Y-m-d'); // end date
-        $date1 = new \DateTime($startDate);
-        $date2 = new \DateTime($endDate);
-        $interval = $date1->diff($date2);
-
-        $totalDays = ($interval->days <= 0) ? 1 : $interval->days;
-        $desiredProfit = $totalDays * $model->desired_profit;
-
-        $data['required_stock'] = ceil($model->desired_profit / $model->desired_per_share_price);
-
-        $searchModelTradebook = new TradebookSearch();
-        $dataProviderTradebook = $searchModelTradebook->search($this->request->queryParams);
-
         return $this->render('view', [
-            'model' => $model,
-            'data' => $data,
-            'searchModelTradebook' => $searchModelTradebook,
-            'dataProviderTradebook' => $dataProviderTradebook,
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Watchlist model.
+     * Creates a new Tradebook model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Watchlist();
+        $model = new Tradebook();
 
         if ($this->request->isPost) {
-            $model->date = date('Y-m-d');
-            $model->ip_address = Common::getIpAddress();
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -113,7 +83,7 @@ class WatchlistController extends Controller
     }
 
     /**
-     * Updates an existing Watchlist model.
+     * Updates an existing Tradebook model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -124,8 +94,7 @@ class WatchlistController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            // return $this->redirect(['view', 'id' => $model->id]);
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -134,7 +103,7 @@ class WatchlistController extends Controller
     }
 
     /**
-     * Deletes an existing Watchlist model.
+     * Deletes an existing Tradebook model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -147,22 +116,16 @@ class WatchlistController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionCalculate()
-    {
-        echo "<pre>";
-        print_r(Yii::$app->request->post());
-    }
-
     /**
-     * Finds the Watchlist model based on its primary key value.
+     * Finds the Tradebook model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Watchlist the loaded model
+     * @return Tradebook the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Watchlist::findOne(['id' => $id])) !== null) {
+        if (($model = Tradebook::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

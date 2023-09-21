@@ -1,27 +1,26 @@
 <?php
 
-use app\models\Watchlist;
+use app\models\Tradebook;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
+
 /** @var yii\web\View $this */
-/** @var app\models\WatchlistSearch $searchModel */
+/** @var app\models\TradebookSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Watchlists';
+$this->title = 'Tradebooks';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="watchlist-index">
+<div class="tradebook-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Watchlist', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Tradebook', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -31,19 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'scrip_name',
-            'desired_per_share_price',
-            'desired_profit',
-            'date',
-            [
-                'attribute' => 'status',
-                'label' => 'Status',
-                'format' => 'html',
-                'value' => function ($model, $key, $index, $column) {
-                    return ($model->status==1) ? 'Active' : "Inactive";
-                }
-            ],
-            // 'status',
+            'watchlist_id',
+            'quantity',
+            'price',
+            'amount',
+            //'date',
+            //'status',
             //'ip_address',
             //'created_by',
             //'created_dt',
@@ -51,13 +43,12 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_dt',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Watchlist $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Tradebook $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],
         ],
     ]); ?>
 
-    <?php Pjax::end(); ?>
 
 </div>
