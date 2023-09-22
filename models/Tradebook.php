@@ -64,4 +64,50 @@ class Tradebook extends \yii\db\ActiveRecord
             'updated_dt' => 'Updated Dt',
         ];
     }
+
+    public function getWatchlist()
+    {
+        return $this->hasOne(Watchlist::class, ['id' => 'watchlist_id']);
+    }
+
+    public static function getTotal($provider, $fieldName)
+    {
+        if ($provider) {
+            $total = 0;
+
+            foreach ($provider as $item) {
+                $total += $item[$fieldName];
+            }
+
+            return number_format($total, 2);
+        }
+    }
+
+    public static function getTotalPrice($provider, $quantity, $price)
+    {
+        if ($provider) {
+            $total_quantity = 0;
+            $total_price = 0;
+            foreach ($provider as $item) {
+                $total_quantity += $item[$quantity];
+            }
+            foreach ($provider as $item) {
+                $total_price += $item[$price];
+            }
+            return "Avg: ₹ " . number_format($total_price / $total_quantity);
+        }
+    }
+
+    public static function getTotalAmount($provider, $fieldName)
+    {
+        if ($provider) {
+            $total = 0;
+
+            foreach ($provider as $item) {
+                $total += $item[$fieldName];
+            }
+
+            return "₹ " . number_format($total, 2);
+        }
+    }
 }

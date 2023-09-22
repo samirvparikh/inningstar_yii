@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Tradebook;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap5\ActiveForm;
@@ -47,8 +48,6 @@ $desiredProfit = $totalDays * $model->desired_profit;
                 'model' => $model,
                 'attributes' => [
                     'scrip_name',
-                    'desired_per_share_price',
-                    'desired_profit',
                     [
                         'attribute' => 'date',
                         'format' => 'html',
@@ -57,16 +56,19 @@ $desiredProfit = $totalDays * $model->desired_profit;
                             return date('d-M-Y', strtotime($data['date']));
                         },
                     ],
+                    'desired_per_share_price',
+                    'desired_profit',                    
                 ],
             ]) ?>
         </div>
         <div class="col-lg-4">
             <?= $form->field($model, 'total_days')->textInput(['value' => $totalDays]) ?>
             <?= $form->field($model, 'total_desired_profit')->textInput(['value' => $desiredProfit]) ?>
+            <?= $form->field($model, 'desired_per_share_price')->textInput() ?>
         </div>
         <div class="col-lg-4">
-            <?= $form->field($model, 'current_price')->textInput(['maxlength' => true]) ?>
-            <div class="d-flex align-items-center p-3 my-3 text-white bg-danger rounded shadow-sm">
+            <?= $form->field($model, 'current_price')->textInput() ?>
+            <div class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm" style="background: linear-gradient(-222.93deg, #06c0e3 0%, #f39200 100%)">
                 <div class="lh-1">
                     <h1 class="h6 mb-0 text-white lh-1">Required Stock: <?= $data['required_stock'] ?></h1>
                     <!-- <small>Since 2011</small> -->
@@ -84,13 +86,34 @@ $desiredProfit = $totalDays * $model->desired_profit;
     <?= GridView::widget([
         'dataProvider' => $dataProviderTradebook,
         // 'filterModel' => $searchModelTradebook,
+        'showFooter' => true,
+        'footerRowOptions'=>['style'=>'font-weight:bold; text-align: right;'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'watchlist_id',
-            'quantity',
-            'price',
-            'amount',
+            // 'quantity',
+            // 'price',
+            // 'amount',
             'date',
+            [
+                'attribute' => 'quantity',
+                'format' => 'raw',
+                'contentOptions'=>array('style' => 'text-align: right'),
+                'footer' => Tradebook::getTotal($dataProviderTradebook->models, 'quantity'),
+            ],
+            [
+                'attribute' => 'price',
+                'format' => ['currency', '₹'],
+                'contentOptions'=>array('style' => 'text-align: right'),
+                'footer' => Tradebook::getTotalPrice($dataProviderTradebook->models, 'quantity', 'amount'),
+            ],
+            [
+                'attribute' => 'amount',
+                'format' => ['currency', '₹'],
+                'contentOptions'=>array('style' => 'text-align: right'),
+                'footer' => Tradebook::getTotalAmount($dataProviderTradebook->models, 'amount'),
+            ],
+            
         ],
     ]); ?>
     </div>
@@ -103,11 +126,20 @@ $desiredProfit = $totalDays * $model->desired_profit;
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="calculateModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="calculateModalLabel"><?= $model->scrip_name ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
+                <div class="row">
+                    <p id="responce"></p>
+                </div>
+                <div class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm" style="background: linear-gradient(-222.93deg, #06c0e3 0%, #f39200 100%)">
+                    <div class="lh-1">
+                        <h1 class="h6 mb-0 text-white lh-1">Required Stock: 123</h1>
+                        <!-- <small>Since 2011</small> -->
+                    </div>
+                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -125,14 +157,16 @@ $desiredProfit = $totalDays * $model->desired_profit;
                 watchlist_id: $('#watchlist-id').val(),
                 total_days: $('#watchlist-total_days').val(),
                 total_desired_profit: $('#watchlist-total_desired_profit').val(),
+                desired_per_share_price: $('#watchlist-desired_per_share_price').val(),
                 current_price: $('#watchlist-current_price').val(),
             };
             $.ajax({
                 url: '<?php echo Yii::$app->request->baseUrl . '/index.php?r=watchlist/calculate' ?>',
                 data: formData,
                 type: "POST",
-                success: function() {
-                    console.log("success");
+                success: function(response) {
+                    console.log("success:"+response);
+                    $('#responce').html(response);
                     $('#calculateModal').modal('show');
                 },
                 error: function() {

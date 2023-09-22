@@ -19,6 +19,8 @@ use yii\jui\DatePicker;
 
             <?= $form->field($model, 'scrip_name')->textInput(['maxlength' => true]) ?>
 
+            <?= $form->field($model, 'current_price')->textInput(['maxlength' => true]) ?>
+
             <?= $form->field($model, 'desired_per_share_price')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'desired_profit')->textInput(['maxlength' => true]) ?>

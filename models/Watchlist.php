@@ -10,6 +10,7 @@ use app\models\Common;
  *
  * @property int $id
  * @property string $scrip_name
+ * @property string $current_price
  * @property string $desired_per_share_price
  * @property string $desired_profit
  * @property string|null $date
@@ -22,10 +23,8 @@ use app\models\Common;
  */
 class Watchlist extends \yii\db\ActiveRecord
 {
-    // public $days;
     public $total_days;
     public $total_desired_profit;
-    public $current_price;
 
     /**
      * {@inheritdoc}
@@ -41,9 +40,9 @@ class Watchlist extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['scrip_name', 'desired_per_share_price', 'desired_profit'], 'required'],
+            [['scrip_name', 'current_price','desired_per_share_price', 'desired_profit'], 'required'],
             [['date'], 'safe'],
-            [['desired_per_share_price', 'desired_profit'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*[.,]?[0-9]+([eE][-+]?[0-9]+)?\s*$/'],
+            [['current_price','desired_per_share_price', 'desired_profit'], 'number', 'numberPattern' => '/^\s*[-+]?[0-9]*[.,]?[0-9]+([eE][-+]?[0-9]+)?\s*$/'],
             [['status', 'created_by', 'created_dt', 'updated_by', 'updated_dt'], 'integer'],
             [['scrip_name'], 'string', 'max' => 32],
         ];
@@ -57,6 +56,7 @@ class Watchlist extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'scrip_name' => 'Scrip Name',
+            'current_price' => 'Current Price',
             'desired_per_share_price' => 'Desired Per Share Price',
             'desired_profit' => 'Desired Profit',
             'date' => 'Date',
@@ -83,8 +83,9 @@ class Watchlist extends \yii\db\ActiveRecord
         }
     }
 
-    public static function getTotalDays($obj = null)
+    public function getTradebooks()
     {
-        
+        return $this->hasMany(Tradebook::class, ['watchlist_id' => 'id'])
+        ->select('watchlist_id, date, , SUM(quantity) AS total_quantity');
     }
 }
