@@ -70,7 +70,7 @@ class WatchlistController extends Controller
             'tradebook' => function ($query) {
                 $query->andWhere(['status' => 1]);
             },
-            
+
         ])->all();*/
         /*$tradebook = Watchlist::find()
             ->joinWith('tradebooks')
@@ -85,12 +85,14 @@ class WatchlistController extends Controller
         $date1 = new \DateTime($startDate);
         $date2 = new \DateTime($endDate);
         $interval = $date1->diff($date2);
+
         $totalDays = ($interval->days <= 0) ? 1 : $interval->days;
 
         $desiredProfit = $totalDays * $model->desired_profit;
 
         $data['required_stock'] = ceil($desiredProfit / $model->desired_per_share_price);
 
+        
 
         $searchModelTradebook = new TradebookSearch();
         $dataProviderTradebook = $searchModelTradebook->searchInWatchList($this->request->queryParams);
