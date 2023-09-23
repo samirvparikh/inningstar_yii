@@ -70,15 +70,15 @@ class WatchlistController extends Controller
             'tradebook' => function ($query) {
                 $query->andWhere(['status' => 1]);
             },
+            
         ])->all();*/
         /*$tradebook = Watchlist::find()
             ->joinWith('tradebooks')
             ->where(['tradebook.status' => 1])
             ->one();*/
-        $tradebook = Tradebook::find()->select('id, SUM(quantity) AS total_quantity')->where(['watchlist_id' => $id])->one();
-        echo "<pre>";
-        print_r($tradebook);
-        die;
+        // $tradebook = Tradebook::find()->select('id, SUM(quantity) AS total_quantity')->where(['watchlist_id' => $id])->one();
+        $tradebook = Tradebook::find()->where(['watchlist_id' => $id])->sum('quantity')->sum('amount');
+        echo "<pre>"; print_r($tradebook); die;
 
         $startDate = $model->date; // start date
         $endDate = date('Y-m-d'); // end date
