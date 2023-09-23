@@ -78,7 +78,7 @@ class WatchlistController extends Controller
             ->one();*/
         // $tradebook = Tradebook::find()->select('id, SUM(quantity) AS total_quantity')->where(['watchlist_id' => $id])->one();
         $tradebook = Tradebook::find()->where(['watchlist_id' => $id])->sum('quantity')->sum('amount');
-        echo "<pre>"; print_r($tradebook); die;
+        echo "<pre>"; print_r($tradebook); die; //SAMIR PARIKH
 
         $startDate = $model->date; // start date
         $endDate = date('Y-m-d'); // end date
@@ -92,7 +92,7 @@ class WatchlistController extends Controller
 
         $data['required_stock'] = ceil($desiredProfit / $model->desired_per_share_price);
 
-        
+
 
         $searchModelTradebook = new TradebookSearch();
         $dataProviderTradebook = $searchModelTradebook->searchInWatchList($this->request->queryParams);
