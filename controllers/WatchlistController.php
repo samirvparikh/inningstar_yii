@@ -78,7 +78,7 @@ class WatchlistController extends Controller
             ->one();*/
         // $tradebook = Tradebook::find()->select('id, SUM(quantity) AS total_quantity')->where(['watchlist_id' => $id])->one();
         $tradebook = Tradebook::find()->where(['watchlist_id' => $id])->sum('quantity')->sum('amount');
-        echo "<pre>"; print_r($tradebook); die; //SAMIR PARIKH
+        echo "<pre>"; print_r($tradebook); die; //SAMIR PARIKH V
 
         $startDate = $model->date; // start date
         $endDate = date('Y-m-d'); // end date
