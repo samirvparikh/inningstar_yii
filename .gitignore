@@ -1,0 +1,9 @@
+assets/*
+!assets/.gitignore
+protected/runtime/*
+!protected/runtime/.gitignore
+protected/data/*.db
+themes/classic/views/
+sql/
+config/db.php
+"config/db.php" 

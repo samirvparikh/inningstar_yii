@@ -43,6 +43,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ($model->status==1) ? 'Active' : "Inactive";
                 }
             ],
+            [
+                'attribute' => 'status',
+                'label' => 'Status',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->date;
+                }
+            ],
             // 'status',
             //'ip_address',
             //'created_by',
@@ -51,6 +59,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_dt',
             [
                 'class' => ActionColumn::className(),
+                'header' => 'Action',
+                'contentOptions' => function ($model, $key, $index, $column) {
+                        return ['style' => 'min-width:80px'];
+                },
                 'urlCreator' => function ($action, Watchlist $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
