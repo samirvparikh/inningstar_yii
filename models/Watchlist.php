@@ -85,7 +85,6 @@ class Watchlist extends \yii\db\ActiveRecord
 
     public function getTradebooks()
     {
-        return $this->hasMany(Tradebook::class, ['watchlist_id' => 'id'])
-        ->select('watchlist_id, date, , SUM(quantity) AS total_quantity');
+        return $this->hasMany(Tradebook::class, ['watchlist_id' => 'id']);
     }
 }

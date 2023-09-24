@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Common;
 use app\models\Tradebook;
 use app\models\TradebookSearch;
 use yii\web\Controller;
@@ -65,18 +66,22 @@ class TradebookController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
+        
         $model = new Tradebook();
 
         if ($this->request->isPost) {
+            // echo "<pre>"; print_r($this->request->post()); die;
+            $model->ip_address = Common::getIpAddress();
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['watchlist/view', 'id' => $model->watchlist_id]);
+
             }
         } else {
             $model->loadDefaultValues();
         }
-
+        $model->watchlist_id = $id;
         return $this->render('create', [
             'model' => $model,
         ]);

@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=inningstar_yii',
+    'dsn' => 'mysql:host=localhost;dbname=websture_inningstar',
     'username' => 'root',
     'password' => '',
     'charset' => 'utf8',

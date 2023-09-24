@@ -29,7 +29,7 @@ $desiredProfit = $totalDays * $model->desired_profit;
 
     <h1>#<?= Html::encode($this->title) ?>
         <span class="float-end">
-            <?= Html::a('+Add Trade', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('+Add Trade', ['tradebook/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
@@ -67,7 +67,7 @@ $desiredProfit = $totalDays * $model->desired_profit;
             <?= $form->field($model, 'desired_per_share_price')->textInput() ?>
         </div>
         <div class="col-lg-4">
-            <?= $form->field($model, 'current_price')->textInput() ?>
+            <?= $form->field($model, 'current_price')->textInput() ?>            
             <div class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm" style="background: linear-gradient(-222.93deg, #06c0e3 0%, #f39200 100%)">
                 <div class="lh-1">
                     <h1 class="h6 mb-0 text-white lh-1">Required Stock: <?= $data['required_stock'] ?></h1>
@@ -103,13 +103,13 @@ $desiredProfit = $totalDays * $model->desired_profit;
             ],
             [
                 'attribute' => 'price',
-                'format' => ['currency', '₹'],
+                'format' => ['currency', 'INR'],
                 'contentOptions'=>array('style' => 'text-align: right'),
                 'footer' => Tradebook::getTotalPrice($dataProviderTradebook->models, 'quantity', 'amount'),
             ],
             [
                 'attribute' => 'amount',
-                'format' => ['currency', '₹'],
+                'format' => ['currency', 'INR'],
                 'contentOptions'=>array('style' => 'text-align: right'),
                 'footer' => Tradebook::getTotalAmount($dataProviderTradebook->models, 'amount'),
             ],

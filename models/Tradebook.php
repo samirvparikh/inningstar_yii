@@ -85,6 +85,7 @@ class Tradebook extends \yii\db\ActiveRecord
 
     public static function getTotalPrice($provider, $quantity, $price)
     {
+        // var_dump($price); die;
         if ($provider) {
             $total_quantity = 0;
             $total_price = 0;
@@ -94,7 +95,7 @@ class Tradebook extends \yii\db\ActiveRecord
             foreach ($provider as $item) {
                 $total_price += $item[$price];
             }
-            return "Avg: ₹ " . number_format($total_price / $total_quantity);
+            return "Avg: ₹ " . number_format($total_price / $total_quantity, 2);
         }
     }
 

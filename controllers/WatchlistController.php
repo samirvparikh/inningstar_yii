@@ -61,39 +61,24 @@ class WatchlistController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        // echo "<pre>"; print_r($model->tradebooks); die;
-        // $tradebook = Tradebook::find()->where(['watchlist_id' => $id])->one()->id;
-        // $tradebook = Tradebook::find()->where(['watchlist_id' => $id])->all();
-        // $tradebook = Watchlist::find()->select(['scrip_name', 'current_price'])->where(['id' => $id])->with(['tradebook'])->all();
-        /*$tradebook = Watchlist::find()->where(['id1' => $id])->with([
-            'tradebook' => function ($query) {
-                $query->andWhere(['status' => 1]);
-            },
+        $model = $this->findModel($id);        
+        $tradebook = (new \yii\db\Query())->select(['id', 'watchlist_id', 'SUM(quantity) AS total_quantity', 'SUM(amount) AS total_amount'])->from('tradebook')->where(['watchlist_id'=>$id])->groupBy(['watchlist_id'])->one();
+        // echo "<pre>"; print_r($tradebook); die;
+        if($tradebook){
 
-        ])->all();*/
-        /*$tradebook = Watchlist::find()
-            ->joinWith('tradebooks')
-            ->where(['tradebook.status' => 1])
-            ->one();*/
-        // $tradebook = Tradebook::find()->select('id, SUM(quantity) AS total_quantity')->where(['watchlist_id' => $id])->one();
-        $tradebook = Tradebook::find()->where(['watchlist_id' => $id])->sum('quantity')->sum('amount');
-        echo "<pre>"; print_r($tradebook); die; //SAMIR PARIKH V
-
+        }
+        
         $startDate = $model->date; // start date
         $endDate = date('Y-m-d'); // end date
         $date1 = new \DateTime($startDate);
         $date2 = new \DateTime($endDate);
-        $interval = $date1->diff($date2);
-
+        $interval = $date1->diff($date2);        
         $totalDays = ($interval->days <= 0) ? 1 : $interval->days;
-
-        $desiredProfit = $totalDays * $model->desired_profit;
-
-        $data['required_stock'] = ceil($desiredProfit / $model->desired_per_share_price);
-
-
-
+        
+        $desiredProfit = $totalDays * $model->desired_profit;        
+        $data['required_stock'] = ceil($desiredProfit / $model->desired_per_share_price);    
+        
+        
         $searchModelTradebook = new TradebookSearch();
         $dataProviderTradebook = $searchModelTradebook->searchInWatchList($this->request->queryParams);
 
