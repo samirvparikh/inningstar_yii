@@ -42,7 +42,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Watchlist', 'url' => ['/watchlist/index']],
+            // ['label' => 'Watchlist', 'url' => ['/watchlist/index']],
+            Yii::$app->user->isGuest
+                ? ''
+                : '<li class="nav-item">'
+                    . Html::beginForm(['/watchlist/index'])
+                    . Html::submitButton(
+                        'Watch List',
+                        ['class' => 'nav-link btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>',
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
