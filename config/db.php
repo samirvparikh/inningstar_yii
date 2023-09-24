@@ -3,8 +3,8 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=websture_inningstar',
-    'username' => 'root',
-    'password' => '',
+    'username' => 'websture_inningstar',
+    'password' => 'inningstar@123',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
