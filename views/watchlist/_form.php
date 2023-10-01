@@ -27,7 +27,7 @@ use yii\jui\DatePicker;
 
             
 
-            <!-- <?= $form->field($model, 'status')->textInput() ?> -->
+            <?= $form->field($model, 'date')->textInput(['value'=> date('Y-m-d')]) ?>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group <?php echo (isset($errors["status"]) ? 'error' : '') ?>">
