@@ -69,6 +69,7 @@ class WatchlistController extends Controller
         $interval = $date1->diff($date2);
         $totalDays = ($interval->days <= 0) ? 1 : $interval->days;
         $desiredProfit = $totalDays * $model->desired_profit;
+        
         $sell_price = $model->current_price + $model->desired_per_share_price;
 
         $tradebook = Tradebook::find()->select(['SUM(quantity) as quantity', 'sum(amount) as amount'])->where(['watchlist_id' => $id])->one();
