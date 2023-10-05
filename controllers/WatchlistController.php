@@ -61,24 +61,28 @@ class WatchlistController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);        
-        $tradebook = (new \yii\db\Query())->select(['id', 'watchlist_id', 'SUM(quantity) AS total_quantity', 'SUM(amount) AS total_amount'])->from('tradebook')->where(['watchlist_id'=>$id])->groupBy(['watchlist_id'])->one();
-        // echo "<pre>"; print_r($tradebook); die;
-        if($tradebook){
-
-        }
-        
+        $model = $this->findModel($id);
         $startDate = $model->date; // start date
         $endDate = date('Y-m-d'); // end date
         $date1 = new \DateTime($startDate);
         $date2 = new \DateTime($endDate);
-        $interval = $date1->diff($date2);        
+        $interval = $date1->diff($date2);
         $totalDays = ($interval->days <= 0) ? 1 : $interval->days;
-        
-        $desiredProfit = $totalDays * $model->desired_profit;        
-        $data['required_stock'] = ceil($desiredProfit / $model->desired_per_share_price);    
-        
-        
+        $desiredProfit = $totalDays * $model->desired_profit;
+        $sell_price = $model->current_price + $model->desired_per_share_price;
+
+        $tradebook = Tradebook::find()->select(['SUM(quantity) as quantity', 'sum(amount) as amount'])->where(['watchlist_id' => $id])->one();
+        if(!empty($tradebook->quantity) && !empty($tradebook->amount)){
+            $desired_per_share_price = $model->desired_per_share_price;
+            $desired_profit = $model->desired_profit;
+            $remaining_avg_price = ceil($tradebook->amount/$tradebook->quantity);
+            $remaining_stock_pl = ($tradebook->quantity*$sell_price) - ($tradebook->quantity*$remaining_avg_price);            
+            // echo $remaining_stock_pl;die;
+            $data['required_stock'] = ceil(($desiredProfit - $remaining_stock_pl) / $desired_per_share_price);
+        }else{
+            $data['required_stock'] = ceil($desiredProfit / $model->desired_per_share_price);
+        }
+
         $searchModelTradebook = new TradebookSearch();
         $dataProviderTradebook = $searchModelTradebook->searchInWatchList($this->request->queryParams);
 
