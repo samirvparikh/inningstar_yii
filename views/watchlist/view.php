@@ -2,6 +2,8 @@
 
 use app\models\Tradebook;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\grid\ActionColumn;
 use yii\widgets\DetailView;
 use yii\bootstrap5\ActiveForm;
 use yii\grid\GridView;
@@ -71,7 +73,8 @@ $desiredProfit = $totalDays * $model->desired_profit;
             <div class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm" style="background: linear-gradient(-222.93deg, #06c0e3 0%, #f39200 100%)">
                 <div class="lh-1">
                     <h1 class="h6 mb-0 text-white lh-1">Required Stock: <?= $data['required_stock'] ?></h1>
-                    <!-- <small>Since 2011</small> -->
+                    <br/>
+                    <h1 class="h6 mb-0 text-white lh-1">Required Amount: Rs.<?php echo number_format(ceil($data['required_stock']*$model->current_price),2); ?></h1>
                 </div>
             </div>
             <div class="form-group">
@@ -90,7 +93,7 @@ $desiredProfit = $totalDays * $model->desired_profit;
         'footerRowOptions'=>['style'=>'font-weight:bold; text-align: right;'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'watchlist_id',
+            // 'watchlist_id',
             // 'quantity',
             // 'price',
             // 'amount',
@@ -113,7 +116,22 @@ $desiredProfit = $totalDays * $model->desired_profit;
                 'contentOptions'=>array('style' => 'text-align: right'),
                 'footer' => Tradebook::getTotalAmount($dataProviderTradebook->models, 'amount'),
             ],
-            
+            // [
+            //     'class' => ActionColumn::className(),
+            //     'urlCreator' => function ($action, Tradebook $model, $key, $index, $column) {
+            //         return Url::toRoute([$action, 'id' => $model->id]);
+            //      }
+            // ],
+            [ 'class' => 'yii\grid\ActionColumn' ,
+                'header' => 'Actions' ,
+                'template'=>'{view}',
+                'buttons'=>[
+                    'view'=>function($url,$model){
+                    $html = 'Delete';
+                    return Html::a($html,["tradebook/delete",'post'=>$model->id]);
+                    }
+                ],
+            ] ,
         ],
     ]); ?>
     </div>

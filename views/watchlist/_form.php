@@ -24,10 +24,9 @@ use yii\jui\DatePicker;
             <?= $form->field($model, 'desired_per_share_price')->textInput(['maxlength' => true]) ?>
 
             <?= $form->field($model, 'desired_profit')->textInput(['maxlength' => true]) ?>
-
             
-
-            <?= $form->field($model, 'date')->textInput(['value'=> date('Y-m-d')]) ?>
+            <?php $date = isset($model->date) ? $model->date : date('Y-m-d'); ?>
+            <?= $form->field($model, 'date')->textInput(['value'=> $date]) ?>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group <?php echo (isset($errors["status"]) ? 'error' : '') ?>">

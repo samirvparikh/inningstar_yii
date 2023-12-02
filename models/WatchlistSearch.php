@@ -40,7 +40,7 @@ class WatchlistSearch extends Watchlist
      */
     public function search($params)
     {
-        $query = Watchlist::find();
+        $query = Watchlist::find()->where(['status'=>Watchlist::STATUS_ACTIVE]);
 
         // add conditions that should always apply here
 

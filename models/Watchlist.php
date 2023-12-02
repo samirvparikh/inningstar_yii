@@ -26,6 +26,9 @@ class Watchlist extends \yii\db\ActiveRecord
     public $total_days;
     public $total_desired_profit;
 
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
     /**
      * {@inheritdoc}
      */

@@ -30,11 +30,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'scrip_name',
-            'desired_per_share_price',
+            // 'desired_per_share_price',
+            [
+                'attribute' => 'desired_per_share_price',
+                'label' => 'Per Share',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->desired_per_share_price;
+                }
+            ],
             'desired_profit',
-            'date',
+            // 'date',
+            [
+                'attribute' => 'date',
+                'label' => 'Date',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return date("d-m-Y", strtotime($model->date));
+                }
+            ],
             [
                 'attribute' => 'status',
                 'label' => 'Status',
@@ -43,14 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ($model->status==1) ? 'Active' : "Inactive";
                 }
             ],
-            [
-                'attribute' => 'status',
-                'label' => 'Status',
-                'format' => 'html',
-                'value' => function ($model) {
-                    return $model->date;
-                }
-            ],
+            
             // 'status',
             //'ip_address',
             //'created_by',
