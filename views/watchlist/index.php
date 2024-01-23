@@ -40,8 +40,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return $model->desired_per_share_price;
                 }
-            ],
+            ],            
             'desired_profit',
+            [
+                'attribute' => 'Days',
+                'label' => 'Days',
+                'format' => 'html',
+                'value' => function ($model) {
+                    $startDate = $model->date; // start date
+                    $endDate = date('Y-m-d'); // end date
+                    $date1 = new \DateTime($startDate);
+                    $date2 = new \DateTime($endDate);
+                    $interval = $date1->diff($date2);
+                    $totalDays = ($interval->days <= 0) ? 1 : $interval->days + 1;
+                    return $totalDays;
+                }
+            ],            
             // 'date',
             [
                 'attribute' => 'date',

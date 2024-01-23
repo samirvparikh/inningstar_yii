@@ -15,7 +15,7 @@ use app\models\Common;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'watchlist_id')->textInput() ?>
+    <!-- <?= $form->field($model, 'watchlist_id')->textInput() ?> -->
 
     <?= $form->field($model, 'quantity')->textInput(['class'=>'form-control txt']) ?>
 

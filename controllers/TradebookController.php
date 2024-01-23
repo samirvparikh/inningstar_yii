@@ -116,6 +116,7 @@ class TradebookController extends Controller
      */
     public function actionDelete($id)
     {
+        echo "delete"; die;
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
