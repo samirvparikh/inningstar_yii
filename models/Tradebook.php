@@ -36,7 +36,7 @@ class Tradebook extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['watchlist_id', 'quantity', 'price'], 'required'],
+            [['watchlist_id', 'quantity', 'price','amount'], 'required'],
             [['watchlist_id', 'quantity', 'status', 'created_by', 'created_dt', 'updated_by', 'updated_dt'], 'integer'],
             [['price', 'amount'], 'number'],
             [['date'], 'safe'],

@@ -13,6 +13,11 @@ use yii\widgets\Pjax;
 $this->title = 'Watchlists';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+.table{
+    font-size:12px;
+}
+</style>
 <div class="watchlist-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -28,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
             'scrip_name',
@@ -40,8 +45,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return $model->desired_per_share_price;
                 }
+            ],        
+            [
+                'attribute' => 'desired_profit',
+                'label' => 'Des. Profit',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return $model->desired_profit;
+                }
             ],            
-            'desired_profit',
+            // 'desired_profit',
             [
                 'attribute' => 'Days',
                 'label' => 'Days',
@@ -65,14 +78,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return date("d-m-Y", strtotime($model->date));
                 }
             ],
-            [
-                'attribute' => 'status',
-                'label' => 'Status',
-                'format' => 'html',
-                'value' => function ($model, $key, $index, $column) {
-                    return ($model->status==1) ? 'Active' : "Inactive";
-                }
-            ],
+            // [
+            //     'attribute' => 'status',
+            //     'label' => 'Status',
+            //     'format' => 'html',
+            //     'value' => function ($model, $key, $index, $column) {
+            //         return ($model->status==1) ? 'Active' : "Inactive";
+            //     }
+            // ],
             
             // 'status',
             //'ip_address',

@@ -15,6 +15,8 @@ use app\models\Common;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->field($model, 'watchlist_id')->hiddenInput()->label(false) ?>
+
     <?= $form->field($model, 'quantity')->textInput(['class'=>'form-control txt']) ?>
 
     <?= $form->field($model, 'price')->textInput(['class'=>'form-control txt']) ?>

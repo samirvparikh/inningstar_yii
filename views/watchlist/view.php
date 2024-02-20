@@ -126,9 +126,9 @@ $desiredProfit = $totalDays * $model->desired_profit;
                 'header' => 'Actions' ,
                 'template'=>'{view}',
                 'buttons'=>[
-                    'view'=>function($url,$model){
+                    'view'=>function($url,$data, $model){
                     $html = 'Delete';
-                    return Html::a($html,["tradebook/delete",'post'=>$model->id]);
+                    return Html::a($html,["tradebook/delete-trade",'id'=>$data->id, 'watchlist_id'=>$data->watchlist_id]);
                     }
                 ],
             ] ,

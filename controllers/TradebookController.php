@@ -74,9 +74,11 @@ class TradebookController extends Controller
         if ($this->request->isPost) {
             // echo "<pre>"; print_r($this->request->post()); die;
             $model->ip_address = Common::getIpAddress();
+
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['watchlist/view', 'id' => $model->watchlist_id]);
-
+            }else{
+                echo "\nERRORs .\r\n <pre>" . print_r($model->getErrors(), true); die;
             }
         } else {
             $model->loadDefaultValues();
@@ -116,10 +118,16 @@ class TradebookController extends Controller
      */
     public function actionDelete($id)
     {
-        echo "delete"; die;
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDeleteTrade($id=null, $watchlist_id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['watchlist/view', 'id'=>$watchlist_id]);
     }
 
     /**
